@@ -63,6 +63,7 @@ A full-stack calorie & nutrition tracking web app to track daily intake, log mea
 
 ### 1. Clone Repository
 git clone https://github.com/Shahiduddin1710/Calorie-Tracker-Main.git
+
 cd calorie-tracker  
 
 ### 2. Backend Setup
