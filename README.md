@@ -1,104 +1,232 @@
-# CalorieTrack
+# CalorieTrack 🥗
 
-🔗 Live App: https://calorie-tracker-3n4a.onrender.com
+A full-stack nutrition and fitness tracking web application. Log meals, track calories, monitor macros, and log daily activities — all in one place.
 
-A full-stack calorie & nutrition tracking web app to track daily intake, log meals, and monitor fitness goals.
-
----
-
-## 🔐 Authentication & Security
-
-- Email OTP verification  
-- JWT-based authentication (7-day session)  
-- Password hashing (bcrypt)  
-- Protected routes  
-- Rate limiting  
+**Live Demo:** [calorie-tracker-3n4a.onrender.com](https://calorie-tracker-3n4a.onrender.com)
 
 ---
 
-## 📊 Core Features
+## Features
 
-### 🍽 Food Logging
-- Add meals (Breakfast, Lunch, Dinner, Snacks)  
-- Search from pre-seeded food database  
-- Custom serving sizes  
-- Auto calorie & macro calculation  
-- Edit and delete entries  
+### Authentication
+- Email/password signup and signin
+- OTP-based email verification
+- JWT-based session management
+- Password reset via OTP
 
-### 📈 Dashboard
-- Daily calorie tracking  
-- Remaining calories  
-- Macro tracking (Protein, Carbs, Fat)  
-- Meal-wise breakdown  
+### Food & Nutrition
+- Search from a database of 25+ common foods
+- Log meals across Breakfast, Lunch, Dinner, and Snacks
+- Auto-calculated macros (protein, carbs, fat, calories)
+- Add custom foods with full nutrient details
+- Date navigation to view past food logs
 
-### 👤 Profile & Goals
-- Set age, weight, height, activity level  
-- Choose goal (Lose / Maintain / Gain)  
-- Auto-calculated calorie targets  
+### Activity Tracking
+- Log activities: Running, Walking, Cardio, Swimming, Cycling, Custom
+- Auto-calculated calories burned based on duration and distance
+- Daily activity summary (kcal burned, total minutes, activity count)
+- Date-based history
 
-### 📊 Progress
-- Weekly calorie trends  
-- Macro insights  
+### Dashboard
+- Net calories display (eaten − burned)
+- Daily macro breakdown (protein, carbs, fat)
+- Meal-wise calorie summary
+- Progress bar toward daily calorie goal
 
----
-
-## 🏗 Tech Stack
-
-**Frontend**
-- React.js  
-- React Router DOM  
-- Context API  
-- Axios  
-
-**Backend**
-- Node.js  
-- Express.js  
-- MongoDB (Mongoose)  
-- JWT Authentication  
-- Nodemailer (OTP Emails)  
+### Profile & Progress
+- Set daily calorie goal, weight, height, and fitness goals
+- Track weight and calorie trends over time
 
 ---
 
-## ⚙️ Installation Guide
+## Tech Stack
 
-### 1. Clone Repository
-git clone https://github.com/Shahiduddin1710/Calorie-Tracker-Main.git
+### Frontend
+| Technology | Purpose |
+|---|---|
+| React 18 | UI framework |
+| React Router v6 | Client-side routing |
+| Axios | HTTP requests |
+| date-fns | Date formatting |
+| react-hot-toast | Notifications |
+| CSS (custom) | Styling |
 
-cd calorie-tracker  
+### Backend
+| Technology | Purpose |
+|---|---|
+| Node.js | Runtime |
+| Express.js | Web framework |
+| MongoDB Atlas | Database |
+| Mongoose | ODM |
+| JWT | Authentication |
+| Nodemailer | Email (OTP) |
+| express-rate-limit | Rate limiting |
 
-### 2. Backend Setup
-cd backend  
-npm install  
-
-Create `.env` file:
-
-MONGO_URI=your_mongodb_uri  
-JWT_SECRET=your_secret  
-CLIENT_URL=http://localhost:3000  
-EMAIL_USER=your_email  
-EMAIL_PASS=your_app_password  
-
-Run backend:  
-npm run dev  
-
-### 3. Frontend Setup
-cd ../frontend  
-npm install  
-npm start  
-
----
-
-## 🌟 Future Enhancements
-
-- Barcode food scanning  
-- Advanced analytics  
-- Meal recommendations  
-- Export reports  
+### Deployment
+| Service | Purpose |
+|---|---|
+| Vercel | Backend hosting |
+| Render | Frontend hosting |
+| MongoDB Atlas | Database hosting |
 
 ---
 
-## 👨‍💻 Author
+## Project Structure
 
-**Shahiduddin Shaikh**  
-Computer Engineering Student  
-Vidyavardhini College of Engineering  
+```
+calorietracker-backend/
+├── middleware/
+│   └── auth.js
+├── models/
+│   ├── User.js
+│   ├── Food.js
+│   ├── FoodLog.js
+│   └── ActivityLog.js
+├── routes/
+│   ├── auth.js
+│   ├── food.js
+│   ├── log.js
+│   ├── user.js
+│   └── activity.js
+├── utils/
+│   ├── email.js
+│   └── jwt.js
+├── seed.js
+├── server.js
+└── vercel.json
+
+calorie-tracker-frontend/
+├── src/
+│   ├── components/
+│   │   ├── Layout.js
+│   │   └── LoadingScreen.js
+│   ├── context/
+│   │   └── AuthContext.js
+│   ├── pages/
+│   │   ├── DashboardPage.js
+│   │   ├── FoodLogPage.js
+│   │   ├── ActivityPage.js
+│   │   ├── FoodsPage.js
+│   │   ├── ProgressPage.js
+│   │   ├── ProfilePage.js
+│   │   ├── SigninPage.js
+│   │   ├── SignupPage.js
+│   │   └── OTPPage.js
+│   └── utils/
+│       └── api.js
+└── package.json
+```
+
+---
+
+## Setup & Installation
+
+### Prerequisites
+- Node.js v18+
+- MongoDB Atlas account
+- SMTP email credentials (Gmail, Brevo, etc.)
+
+### Backend
+
+```bash
+# Clone the repo
+git clone https://github.com/Shahiduddin1710/calorietracker-backend.git
+cd calorietracker-backend
+
+# Install dependencies
+npm install
+
+# Create .env file
+cp .env.example .env
+```
+
+Fill in your `.env`:
+
+```env
+MONGO_URI=your_mongodb_connection_string
+JWT_SECRET=your_jwt_secret
+JWT_EXPIRE=7d
+CLIENT_URL=http://localhost:3000
+EMAIL_HOST=smtp.gmail.com
+EMAIL_PORT=587
+EMAIL_USER=your_email@gmail.com
+EMAIL_PASS=your_app_password
+EMAIL_FROM=your_email@gmail.com
+PORT=5000
+```
+
+```bash
+# Seed the food database
+node seed.js
+
+# Start the server
+node server.js
+```
+
+### Frontend
+
+```bash
+# Clone the repo
+git clone https://github.com/Shahiduddin1710/calorie-tracker-frontend.git
+cd calorie-tracker-frontend
+
+# Install dependencies
+npm install
+
+# Create .env file
+echo "REACT_APP_API_URL=http://localhost:5000/api" > .env
+
+# Start the app
+npm start
+```
+
+---
+
+## Environment Variables
+
+### Backend `.env`
+
+| Variable | Description |
+|---|---|
+| `MONGO_URI` | MongoDB Atlas connection string |
+| `JWT_SECRET` | Secret key for JWT signing |
+| `JWT_EXPIRE` | Token expiry duration (e.g. `7d`) |
+| `CLIENT_URL` | Frontend URL for CORS |
+| `EMAIL_HOST` | SMTP host |
+| `EMAIL_PORT` | SMTP port |
+| `EMAIL_USER` | SMTP username |
+| `EMAIL_PASS` | SMTP password |
+| `EMAIL_FROM` | Sender email address |
+| `PORT` | Server port (default: 5000) |
+
+### Frontend `.env`
+
+| Variable | Description |
+|---|---|
+| `REACT_APP_API_URL` | Backend API base URL |
+
+---
+
+## API Endpoints
+
+| Method | Endpoint | Description | Auth |
+|---|---|---|---|
+| POST | `/api/auth/signup` | Register new user | No |
+| POST | `/api/auth/signin` | Login | No |
+| POST | `/api/auth/verify-otp` | Verify email OTP | No |
+| GET | `/api/auth/me` | Get current user | Yes |
+| GET | `/api/food/search` | Search foods | Yes |
+| GET | `/api/log/:date` | Get food logs by date | Yes |
+| POST | `/api/log` | Add food log entry | Yes |
+| DELETE | `/api/log/:id` | Delete food log entry | Yes |
+| GET | `/api/activity/date/:date` | Get activities by date | Yes |
+| GET | `/api/activity/stats/weekly` | Weekly activity stats | Yes |
+| POST | `/api/activity` | Log new activity | Yes |
+| DELETE | `/api/activity/:id` | Delete activity | Yes |
+| GET | `/api/health` | Health check | No |
+
+---
+
+## License
+
+MIT
