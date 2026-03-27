@@ -207,26 +207,5 @@ npm start
 
 ---
 
-## API Endpoints
 
-| Method | Endpoint | Description | Auth |
-|---|---|---|---|
-| POST | `/api/auth/signup` | Register new user | No |
-| POST | `/api/auth/signin` | Login | No |
-| POST | `/api/auth/verify-otp` | Verify email OTP | No |
-| GET | `/api/auth/me` | Get current user | Yes |
-| GET | `/api/food/search` | Search foods | Yes |
-| GET | `/api/log/:date` | Get food logs by date | Yes |
-| POST | `/api/log` | Add food log entry | Yes |
-| DELETE | `/api/log/:id` | Delete food log entry | Yes |
-| GET | `/api/activity/date/:date` | Get activities by date | Yes |
-| GET | `/api/activity/stats/weekly` | Weekly activity stats | Yes |
-| POST | `/api/activity` | Log new activity | Yes |
-| DELETE | `/api/activity/:id` | Delete activity | Yes |
-| GET | `/api/health` | Health check | No |
 
----
-
-## License
-
-MIT
