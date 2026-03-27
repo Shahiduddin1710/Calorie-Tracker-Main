@@ -1,11 +1,10 @@
 import axios from 'axios'
 
 const api = axios.create({
-  baseURL: 'http://localhost:5000/api',
+  baseURL: process.env.REACT_APP_API_URL || 'http://localhost:5000/api',
   timeout: 15000
 })
 
-// ✅ ADD THIS - attaches token to every request
 api.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem('ct_token')
@@ -28,5 +27,12 @@ api.interceptors.response.use(
     return Promise.reject(error)
   }
 )
+
+export const activityAPI = {
+  getByDate: (date) => api.get(`/activity/${date}`),
+  getWeeklyStats: (startDate) => api.get(`/activity/stats/weekly?startDate=${startDate}`),
+  add: (data) => api.post('/activity', data),
+  delete: (id) => api.delete(`/activity/${id}`)
+}
 
 export default api

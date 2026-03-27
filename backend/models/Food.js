@@ -41,5 +41,8 @@ const foodSchema = new mongoose.Schema({
 });
 
 foodSchema.index({ name: 'text', brand: 'text' });
+foodSchema.index({ name: 1 });
+foodSchema.index({ category: 1 });
+foodSchema.index({ isPublic: 1 });
 
-module.exports = mongoose.model('Food', foodSchema);
+module.exports = mongoose.models.Food || mongoose.model('Food', foodSchema);

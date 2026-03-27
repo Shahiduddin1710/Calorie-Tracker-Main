@@ -11,6 +11,7 @@ import FoodLogPage from './pages/FoodLogPage'
 import ProfilePage from './pages/ProfilePage'
 import ProgressPage from './pages/ProgressPage'
 import FoodsPage from './pages/FoodsPage'
+import ActivityPage from './pages/ActivityPage'
 import Layout from './components/Layout'
 
 const ProtectedRoute = ({ children }) => {
@@ -42,6 +43,7 @@ const AppRoutes = () => {
         <Route path="foods" element={<FoodsPage />} />
         <Route path="progress" element={<ProgressPage />} />
         <Route path="profile" element={<ProfilePage />} />
+        <Route path="activity" element={<ActivityPage />} />
       </Route>
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>

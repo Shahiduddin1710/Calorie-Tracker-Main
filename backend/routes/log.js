@@ -1,14 +1,64 @@
 const express = require('express');
 const router = express.Router();
-const FoodLog = require('../models/FoodLog');
-const Food = require('../models/Food');
+const mongoose = require('mongoose');
 const { protect } = require('../middleware/auth');
+
+router.get('/stats/weekly', protect, async (req, res) => {
+  try {
+    const FoodLog = mongoose.model('FoodLog');
+    const ActivityLog = mongoose.model('ActivityLog');
+
+    const { startDate } = req.query;
+    const start = startDate || new Date(Date.now() - 6 * 24 * 60 * 60 * 1000).toISOString().split('T')[0];
+    const end = new Date().toISOString().split('T')[0];
+
+    const [foodLogs, activityLogs] = await Promise.all([
+      FoodLog.find({ user: req.user._id, date: { $gte: start, $lte: end } }),
+      ActivityLog.find({ user: req.user._id, date: { $gte: start, $lte: end } })
+    ]);
+
+    const dailyStats = {};
+
+    foodLogs.forEach(log => {
+      if (!dailyStats[log.date]) {
+        dailyStats[log.date] = { calories: 0, protein: 0, carbs: 0, fat: 0, caloriesBurned: 0, netCalories: 0 };
+      }
+      dailyStats[log.date].calories += log.nutrients.calories || 0;
+      dailyStats[log.date].protein += log.nutrients.protein || 0;
+      dailyStats[log.date].carbs += log.nutrients.carbs || 0;
+      dailyStats[log.date].fat += log.nutrients.fat || 0;
+    });
+
+    activityLogs.forEach(log => {
+      if (!dailyStats[log.date]) {
+        dailyStats[log.date] = { calories: 0, protein: 0, carbs: 0, fat: 0, caloriesBurned: 0, netCalories: 0 };
+      }
+      dailyStats[log.date].caloriesBurned += log.caloriesBurned || 0;
+    });
+
+    Object.keys(dailyStats).forEach(date => {
+      const d = dailyStats[date];
+      d.netCalories = d.calories - d.caloriesBurned;
+    });
+
+    res.json({ success: true, stats: dailyStats });
+  } catch (error) {
+    console.error('Weekly stats error:', error);
+    res.status(500).json({ success: false, message: 'Failed to fetch stats.' });
+  }
+});
 
 router.get('/:date', protect, async (req, res) => {
   try {
+    const FoodLog = mongoose.model('FoodLog');
+    const ActivityLog = mongoose.model('ActivityLog');
+
     const { date } = req.params;
 
-    const logs = await FoodLog.find({ user: req.user._id, date }).populate('food').sort({ createdAt: 1 });
+    const [logs, activityLogs] = await Promise.all([
+      FoodLog.find({ user: req.user._id, date }).populate('food').sort({ createdAt: 1 }),
+      ActivityLog.find({ user: req.user._id, date }).sort({ createdAt: 1 })
+    ]);
 
     const grouped = {
       breakfast: logs.filter(l => l.meal === 'breakfast'),
@@ -26,7 +76,11 @@ router.get('/:date', protect, async (req, res) => {
       return acc;
     }, { calories: 0, protein: 0, carbs: 0, fat: 0, fiber: 0 });
 
-    res.json({ success: true, logs: grouped, totals, allLogs: logs });
+    const totalBurned = activityLogs.reduce((sum, log) => sum + log.caloriesBurned, 0);
+    totals.caloriesBurned = totalBurned;
+    totals.netCalories = totals.calories - totalBurned;
+
+    res.json({ success: true, logs: grouped, totals, allLogs: logs, activityLogs });
   } catch (error) {
     console.error('Get logs error:', error);
     res.status(500).json({ success: false, message: 'Failed to fetch food logs.' });
@@ -35,6 +89,9 @@ router.get('/:date', protect, async (req, res) => {
 
 router.post('/', protect, async (req, res) => {
   try {
+    const FoodLog = mongoose.model('FoodLog');
+    const Food = mongoose.model('Food');
+
     const { foodId, date, meal, servings } = req.body;
 
     if (!foodId || !date || !meal || !servings) {
@@ -82,6 +139,7 @@ router.post('/', protect, async (req, res) => {
 
 router.put('/:id', protect, async (req, res) => {
   try {
+    const FoodLog = mongoose.model('FoodLog');
     const { servings } = req.body;
 
     const log = await FoodLog.findOne({ _id: req.params.id, user: req.user._id }).populate('food');
@@ -105,7 +163,6 @@ router.put('/:id', protect, async (req, res) => {
     };
 
     await log.save();
-
     res.json({ success: true, log });
   } catch (error) {
     res.status(500).json({ success: false, message: 'Failed to update log.' });
@@ -114,6 +171,7 @@ router.put('/:id', protect, async (req, res) => {
 
 router.delete('/:id', protect, async (req, res) => {
   try {
+    const FoodLog = mongoose.model('FoodLog');
     const log = await FoodLog.findOneAndDelete({ _id: req.params.id, user: req.user._id });
 
     if (!log) {
@@ -123,35 +181,6 @@ router.delete('/:id', protect, async (req, res) => {
     res.json({ success: true, message: 'Food log deleted.' });
   } catch (error) {
     res.status(500).json({ success: false, message: 'Failed to delete log.' });
-  }
-});
-
-router.get('/stats/weekly', protect, async (req, res) => {
-  try {
-    const { startDate } = req.query;
-
-    const start = startDate || new Date(Date.now() - 6 * 24 * 60 * 60 * 1000).toISOString().split('T')[0];
-    const end = new Date().toISOString().split('T')[0];
-
-    const logs = await FoodLog.find({
-      user: req.user._id,
-      date: { $gte: start, $lte: end }
-    });
-
-    const dailyStats = {};
-    logs.forEach(log => {
-      if (!dailyStats[log.date]) {
-        dailyStats[log.date] = { calories: 0, protein: 0, carbs: 0, fat: 0 };
-      }
-      dailyStats[log.date].calories += log.nutrients.calories || 0;
-      dailyStats[log.date].protein += log.nutrients.protein || 0;
-      dailyStats[log.date].carbs += log.nutrients.carbs || 0;
-      dailyStats[log.date].fat += log.nutrients.fat || 0;
-    });
-
-    res.json({ success: true, stats: dailyStats });
-  } catch (error) {
-    res.status(500).json({ success: false, message: 'Failed to fetch stats.' });
   }
 });
 

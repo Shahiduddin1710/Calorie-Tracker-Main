@@ -6,11 +6,6 @@ const rateLimit = require('express-rate-limit');
 
 dotenv.config();
 
-const authRoutes = require('./routes/auth');
-const foodRoutes = require('./routes/food');
-const logRoutes = require('./routes/log');
-const userRoutes = require('./routes/user');
-
 const app = express();
 
 app.use(cors({
@@ -28,29 +23,36 @@ const limiter = rateLimit({
 });
 app.use('/api/', limiter);
 
-const otpLimiter = rateLimit({
-  windowMs: 5 * 60 * 1000,
-  max: 5,
-  message: { success: false, message: 'Too many OTP requests, please wait 5 minutes.' }
-});
-
-app.use('/api/auth', authRoutes);
-app.use('/api/food', foodRoutes);
-app.use('/api/log', logRoutes);
-app.use('/api/user', userRoutes);
-
-app.get('/api/health', (req, res) => {
-  res.json({ success: true, message: 'Server is running', timestamp: new Date() });
-});
-
-app.use((err, req, res, next) => {
-  console.error(err.stack);
-  res.status(500).json({ success: false, message: 'Something went wrong on our end.' });
-});
-
 mongoose.connect(process.env.MONGO_URI)
   .then(() => {
     console.log('MongoDB connected successfully');
+
+    require('./models/User');
+    require('./models/Food');
+    require('./models/FoodLog');
+    require('./models/ActivityLog');
+
+    const authRoutes = require('./routes/auth');
+    const foodRoutes = require('./routes/food');
+    const logRoutes = require('./routes/log');
+    const userRoutes = require('./routes/user');
+    const activityRoutes = require('./routes/activity');
+
+    app.use('/api/auth', authRoutes);
+    app.use('/api/food', foodRoutes);
+    app.use('/api/log', logRoutes);
+    app.use('/api/user', userRoutes);
+    app.use('/api/activity', activityRoutes);
+
+    app.get('/api/health', (req, res) => {
+      res.json({ success: true, message: 'Server is running', timestamp: new Date() });
+    });
+
+    app.use((err, req, res, next) => {
+      console.error(err.stack);
+      res.status(500).json({ success: false, message: 'Something went wrong on our end.' });
+    });
+
     const PORT = process.env.PORT || 5000;
     app.listen(PORT, () => {
       console.log(`Server running on port ${PORT}`);

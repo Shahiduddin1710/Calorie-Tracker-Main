@@ -39,4 +39,4 @@ const foodLogSchema = new mongoose.Schema({
 
 foodLogSchema.index({ user: 1, date: 1 });
 
-module.exports = mongoose.model('FoodLog', foodLogSchema);
+module.exports = mongoose.models.FoodLog || mongoose.model('FoodLog', foodLogSchema);
