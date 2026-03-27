@@ -1,4 +1,4 @@
-# CalorieTrack 🥗
+# CalorieTrack 
 
 A full-stack nutrition and fitness tracking web application. Log meals, track calories, monitor macros, and log daily activities — all in one place.
 
