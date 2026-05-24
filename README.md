@@ -71,7 +71,7 @@ A full-stack nutrition and fitness tracking web application. Log meals, track ca
 
 ---
 
-## 👨‍💻 Author
+## Author
 <p align="center">
 <b>Shahiduddin Shaikh (Shaho)</b>
 <br/>
