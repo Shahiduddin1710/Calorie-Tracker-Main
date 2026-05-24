@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { toast } from 'react-hot-toast'
 import api from '../utils/api'
-import './SignupPage.css'
+import '../styles/signup.css'
 
 export default function SignupPage() {
   const navigate = useNavigate()

@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import { format } from 'date-fns'
 import { toast } from 'react-hot-toast'
 import api from '../utils/api'
-import './ActivityPage.css'
+import '../styles/ActivityPage.css'
 
 const today = format(new Date(), 'yyyy-MM-dd')
 
@@ -71,6 +71,18 @@ const ActivityIcon = ({ type, size = 18 }) => {
   )
 }
 
+function estimateCalories(activityType, duration, distance) {
+  const rates = { running: 10, walking: 5, cardio: 8, swimming: 7, cycling: 6, custom: 5 }
+  if (distance && distance > 0) {
+    if (activityType === 'running') return Math.round(distance * 60)
+    if (activityType === 'walking') return Math.round(distance * 40)
+    if (activityType === 'cardio') return Math.round(distance * 50)
+    if (activityType === 'swimming') return Math.round(distance * 300)
+    if (activityType === 'cycling') return Math.round(distance * 40)
+  }
+  return Math.round((rates[activityType] || 5) * duration)
+}
+
 export default function ActivityPage() {
   const [date, setDate] = useState(today)
   const [logs, setLogs] = useState([])
@@ -91,7 +103,7 @@ export default function ActivityPage() {
   const fetchLogs = async () => {
     setLoading(true)
     try {
-      const res = await api.get(`/activity/${date}`)
+      const res = await api.get(`/activity/date/${date}`)
       setLogs(res.data.logs)
       setTotalBurned(res.data.totalBurned)
     } catch {
@@ -102,8 +114,7 @@ export default function ActivityPage() {
     }
   }
 
-  const selectedActivity = ACTIVITY_OPTIONS.find(a => a.value === form.activityType)
- const showDistance = ['running', 'walking', 'cardio', 'swimming', 'cycling'].includes(form.activityType)
+  const showDistance = ['running', 'walking', 'cardio', 'swimming', 'cycling'].includes(form.activityType)
 
   const handleSubmit = async (e) => {
     e.preventDefault()
@@ -358,17 +369,4 @@ export default function ActivityPage() {
       </div>
     </div>
   )
-}
-
-function estimateCalories(activityType, duration, distance) {
-  const rates = { running: 10, walking: 5, cardio: 8, swimming: 7, cycling: 6, custom: 5 }
-  if (distance && distance > 0) {
-  if (activityType === 'running') return Math.round(distance * 60)
-  if (activityType === 'walking') return Math.round(distance * 40)
-  if (activityType === 'cardio') return Math.round(distance * 50)
-  if (activityType === 'swimming') return Math.round(distance * 300)
-  if (activityType === 'cycling') return Math.round(distance * 40)
-}
-
-return Math.round((rates[activityType] || 5) * duration)
 }

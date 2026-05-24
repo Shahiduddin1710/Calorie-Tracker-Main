@@ -3,7 +3,7 @@ import { format, subDays } from 'date-fns'
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, BarChart, Bar, Legend } from 'recharts'
 import api from '../utils/api'
 import { useAuth } from '../context/AuthContext'
-import './ProgressPage.css'
+import '../styles/ProgressPage.css'
 
 const gridColor = '#e5e7eb'
 const tickColor = '#9ca3af'

@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react'
 import { toast } from 'react-hot-toast'
 import api from '../utils/api'
-import './FoodsPage.css'
+import '../styles/FoodsPage.css'
 
 const CATEGORIES = ['all', 'protein', 'vegetable', 'fruit', 'grain', 'dairy', 'fat', 'beverage', 'snack', 'other']
 

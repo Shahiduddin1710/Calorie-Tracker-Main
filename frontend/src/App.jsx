@@ -8,10 +8,10 @@ import SigninPage from './pages/SigninPage'
 import OTPPage from './pages/OTPPage'
 import DashboardPage from './pages/DashboardPage'
 import FoodLogPage from './pages/FoodLogPage'
+import ActivityPage from './pages/ActivityPage'
 import ProfilePage from './pages/ProfilePage'
 import ProgressPage from './pages/ProgressPage'
 import FoodsPage from './pages/FoodsPage'
-import ActivityPage from './pages/ActivityPage'
 import Layout from './components/Layout'
 
 const ProtectedRoute = ({ children }) => {
@@ -40,10 +40,10 @@ const AppRoutes = () => {
       <Route path="/" element={<ProtectedRoute><Layout /></ProtectedRoute>}>
         <Route path="dashboard" element={<DashboardPage />} />
         <Route path="log" element={<FoodLogPage />} />
+        <Route path="activity" element={<ActivityPage />} />
         <Route path="foods" element={<FoodsPage />} />
         <Route path="progress" element={<ProgressPage />} />
         <Route path="profile" element={<ProfilePage />} />
-        <Route path="activity" element={<ActivityPage />} />
       </Route>
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>

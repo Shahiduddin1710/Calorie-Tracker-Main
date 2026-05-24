@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { toast } from 'react-hot-toast'
 import { useAuth } from '../context/AuthContext'
 import api from '../utils/api'
-import './ProfilePage.css'
+import '../styles/ProfilePage.css'
 
 export default function ProfilePage() {
   const { user, updateUser } = useAuth()

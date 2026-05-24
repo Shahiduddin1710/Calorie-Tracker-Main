@@ -3,7 +3,7 @@ import { format, addDays, subDays } from 'date-fns'
 import { toast } from 'react-hot-toast'
 import { useAuth } from '../context/AuthContext'
 import api from '../utils/api'
-import './FoodLogPage.css'
+import '../styles/FoodLogPage.css'
 
 const MEALS = ['breakfast', 'lunch', 'dinner', 'snack']
 const MEAL_LABELS = { breakfast: 'Breakfast', lunch: 'Lunch', dinner: 'Dinner', snack: 'Snacks' }
@@ -109,7 +109,6 @@ export default function FoodLogPage() {
 
   const calorieGoal = user?.profile?.dailyCalorieGoal || 2000
   const isToday = dateStr === format(new Date(), 'yyyy-MM-dd')
-
   const caloriesBurned = totals.caloriesBurned || 0
   const netCalories = totals.netCalories ?? (totals.calories - caloriesBurned)
   const remaining = calorieGoal - netCalories

@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { toast } from 'react-hot-toast'
 import api from '../utils/api'
 import { useAuth } from '../context/AuthContext'
-import './SigninPage.css'
+import '../styles/signin.css'
 
 export default function SigninPage() {
   const navigate = useNavigate()
@@ -82,7 +82,6 @@ export default function SigninPage() {
 
       <div className="auth-body">
         <div className="auth-card">
-
           {view === 'signin' && (
             <>
               <div className="auth-heading">

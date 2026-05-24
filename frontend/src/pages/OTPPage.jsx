@@ -3,7 +3,7 @@ import { useLocation, useNavigate, Link } from 'react-router-dom'
 import { toast } from 'react-hot-toast'
 import api from '../utils/api'
 import { useAuth } from '../context/AuthContext'
-import './OTPPage.css'
+import '../styles/OTPPage.css'
 
 export default function OTPPage() {
   const location = useLocation()
@@ -101,7 +101,6 @@ export default function OTPPage() {
 
   return (
     <div className="otp-page">
-
       <nav className="otp-nav">
         <Link to="/" className="otp-nav-logo">
           <img src="/logo192.png" alt="CalorieTrack" className="otp-nav-logo-img" />
@@ -111,7 +110,6 @@ export default function OTPPage() {
 
       <div className="otp-body">
         <div className="otp-card">
-
           {view === 'otp' && (
             <>
               <div className="otp-icon-box">
@@ -244,7 +242,6 @@ export default function OTPPage() {
               </form>
             </>
           )}
-
         </div>
       </div>
     </div>

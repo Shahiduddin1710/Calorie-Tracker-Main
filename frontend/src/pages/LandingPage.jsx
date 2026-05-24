@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom'
 import { useEffect, useState } from 'react'
-import './LandingPage.css'
+import '../styles/landing.css'
 
 const features = [
   {
@@ -53,7 +53,6 @@ export default function LandingPage() {
 
   return (
     <div className="landing-page">
-
       <nav className="landing-nav">
         <div className="landing-nav-inner">
           <div className="landing-logo">
@@ -140,7 +139,6 @@ export default function LandingPage() {
           <p className="footer-copy">© 2026 CalorieTrack. All rights reserved.</p>
         </div>
       </footer>
-
     </div>
   )
 }

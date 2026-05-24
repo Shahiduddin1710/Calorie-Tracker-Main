@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
 import api from '../utils/api'
 import { format } from 'date-fns'
-import './DashboardPage.css'
+import '../styles/DashboardPage.css'
 
 const today = format(new Date(), 'yyyy-MM-dd')
 

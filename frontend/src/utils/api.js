@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 const api = axios.create({
-  baseURL: process.env.REACT_APP_API_URL || 'http://localhost:5000/api',
+  baseURL: import.meta.env.VITE_API_URL || 'https://calorietracker-backend.vercel.app/api',
   timeout: 15000
 })
 
@@ -29,7 +29,7 @@ api.interceptors.response.use(
 )
 
 export const activityAPI = {
-  getByDate: (date) => api.get(`/activity/${date}`),
+  getByDate: (date) => api.get(`/activity/date/${date}`),
   getWeeklyStats: (startDate) => api.get(`/activity/stats/weekly?startDate=${startDate}`),
   add: (data) => api.post('/activity', data),
   delete: (id) => api.delete(`/activity/${id}`)

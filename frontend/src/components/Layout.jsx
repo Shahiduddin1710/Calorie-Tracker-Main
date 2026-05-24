@@ -2,7 +2,7 @@ import { Outlet, NavLink, useNavigate } from 'react-router-dom'
 import { useState } from 'react'
 import { useAuth } from '../context/AuthContext'
 import { toast } from 'react-hot-toast'
-import './Layout.css'
+import '../styles/Layout.css'
 
 const navItems = [
   {
@@ -44,7 +44,6 @@ export default function Layout() {
 
   return (
     <div className="layout-root">
-
       {sidebarOpen && (
         <div className="sidebar-backdrop" onClick={() => setSidebarOpen(false)} />
       )}
